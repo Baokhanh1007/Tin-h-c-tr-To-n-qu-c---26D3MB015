@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Luyện tập - AI cho học sinh Việt</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="luyen-tap.css" />
+    <link rel="stylesheet" href="intellisense.css" />
+  </head>
+
+  <body>
+    <!-- ============ auth-guard.js: kiểm soát quyền truy cập phòng thi ============ -->
+    <script type="module" src="auth-guard.js"></script>
+
+    <!-- ======================= NAVBAR ======================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">
+          <i class="bi bi-cpu me-2"></i>AI cho học sinh Việt
+        </a>
+
+        <!-- ===== IntelliSense Prompt Assistant (IPA) — gợi ý prompt thời gian thực ===== -->
+      <div class="ipa-wrap" id="ipaWrap">
+        <div class="ipa-input-box">
+          <i class="bi bi-stars"></i>
+          <input id="ipaInput" class="ipa-input" type="text"
+                 placeholder="Gõ prompt của bạn... (vd: giải bài toán)" autocomplete="off" />
+          <span class="ipa-badge" id="ipaBadge">Đã áp dụng</span>
+        </div>
+
+        <div class="suggestion-dropdown" id="ipaDropdown">
+          <div class="suggestion-dropdown-header">
+            <i class="bi bi-magic"></i> Gợi ý prompt tối ưu
+          </div>
+          <div class="suggestion-list" id="ipaList"></div>
+          <div class="suggestion-dropdown-footer">
+            <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> chọn</span>
+            <span><kbd>Enter</kbd> / <kbd>Tab</kbd> dùng gợi ý</span>
+            <span><kbd>Esc</kbd> đóng</span>
+          </div>
+        </div>
+      </div>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#intro">Giới thiệu</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="aiMenu" role="button" data-bs-toggle="dropdown">
+                Ứng dụng AI
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" href="index.html#apps">Tổng quan</a></li>
+                <li><a class="dropdown-item" href="ai-toan.html">AI trong Toán</a></li>
+                <li><a class="dropdown-item" href="ai-tienganh.html">AI trong Tiếng Anh</a></li>
+                <li><a class="dropdown-item" href="ai-vatly.html">AI trong Vật lý</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link active" href="luyen-tap.html">Luyện tập</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="lienhe.html">Liên hệ</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="thuvien.html">Thư viện</a>
+            </li>
+
+            <!-- Dropdown Tài khoản — tên người dùng cập nhật bởi auth-guard.js -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="accountMenu" role="button" data-bs-toggle="dropdown">
+                <i class="bi bi-person-circle me-1"></i>
+                <span id="nav-name">Tài khoản</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="taikhoan.html">
+                    <i class="bi bi-person me-2"></i>Thông tin tài khoản
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item text-danger" href="#" id="nav-logout">
+                    <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ======================= NỘI DUNG CHÍNH ======================= -->
+    <main class="lt-main container">
+
+      <!-- =========================================================
+           MÀN HÌNH 1 — Cây thư mục danh sách đề theo chương
+      ========================================================== -->
+      <section id="screen1" class="lt-screen">
+        <div class="lt-page-head">
+          <h1 class="lt-page-title"><i class="bi bi-journal-check me-2"></i>Luyện tập</h1>
+          <p class="lt-page-sub">Chọn chương và bài học để bắt đầu luyện đề trắc nghiệm online</p>
+        </div>
+
+        <div class="accordion lt-accordion" id="chapterAccordion">
+          <!-- Được sinh động bằng luyen-tap.js -->
+        </div>
+      </section>
+
+      <!-- =========================================================
+           MÀN HÌNH 2 — Dashboard bài thi tổng quan
+      ========================================================== -->
+      <section id="screen2" class="lt-screen d-none">
+        <button id="btnBackToScreen1" class="btn lt-btn-back mb-3">
+          <i class="bi bi-arrow-left me-1"></i>Quay lại danh sách
+        </button>
+
+        <div class="card lt-dashboard-card">
+          <div class="card-body">
+            <div class="row align-items-center g-3">
+              <div class="col-lg-8">
+                <span class="badge lt-subject-badge" id="dashSubject">Môn học</span>
+                <h2 class="lt-exam-title" id="dashTitle">Tên bài thi</h2>
+                <div class="lt-meta-row">
+                  <span class="lt-meta-item"><i class="bi bi-list-ol"></i> Số câu hỏi: <strong id="dashQuestionCount">--</strong></span>
+                  <span class="lt-meta-item"><i class="bi bi-clock-history"></i> Thời gian làm bài: <strong id="dashDuration">--</strong> phút</span>
+                </div>
+              </div>
+              <div class="col-lg-4 text-lg-end">
+                <button id="btnEnterExamRoom" class="btn lt-btn-enter">
+                  <i class="bi bi-door-open-fill me-2"></i>VÀO PHÒNG THI
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card lt-tabs-card mt-4">
+          <ul class="nav nav-tabs lt-nav-tabs" id="examTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="tab-stats-btn" data-bs-toggle="tab" data-bs-target="#tabStats" type="button" role="tab">
+                <i class="bi bi-bar-chart-fill me-1"></i>Thống kê
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="tab-rank-btn" data-bs-toggle="tab" data-bs-target="#tabRanking" type="button" role="tab">
+                <i class="bi bi-trophy-fill me-1"></i>Bảng xếp hạng
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="tab-history-btn" data-bs-toggle="tab" data-bs-target="#tabHistory" type="button" role="tab">
+                <i class="bi bi-clock-history me-1"></i>Lịch sử làm bài
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content lt-tab-content">
+            <!-- TAB THỐNG KÊ -->
+            <div class="tab-pane fade show active" id="tabStats" role="tabpanel">
+              <div class="row g-3">
+                <div class="col-6 col-lg-3">
+                  <div class="lt-stat-box">
+                    <div class="lt-stat-label">Tổng thí sinh</div>
+                    <div class="lt-stat-value" id="statTotalCandidates">0</div>
+                  </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <div class="lt-stat-box">
+                    <div class="lt-stat-label">Điểm trung bình</div>
+                    <div class="lt-stat-value" id="statAvgScore">0</div>
+                  </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <div class="lt-stat-box">
+                    <div class="lt-stat-label">Điểm cao nhất</div>
+                    <div class="lt-stat-value" id="statMaxScore">0</div>
+                  </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <div class="lt-stat-box">
+                    <div class="lt-stat-label">Thời gian TB làm bài</div>
+                    <div class="lt-stat-value" id="statAvgTime">0:00</div>
+                  </div>
+                </div>
+              </div>
+
+              <h5 class="lt-subheading mt-4"><i class="bi bi-pie-chart-fill me-2"></i>Tỷ lệ phân bố học lực</h5>
+              <div class="table-responsive">
+                <table class="table lt-table">
+                  <thead>
+                    <tr>
+                      <th>Xếp loại</th>
+                      <th>Khoảng điểm</th>
+                      <th>Số thí sinh</th>
+                      <th>Tỷ lệ</th>
+                    </tr>
+                  </thead>
+                  <tbody id="distributionTableBody">
+                    <!-- Được sinh động bằng luyen-tap.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- TAB BẢNG XẾP HẠNG -->
+            <div class="tab-pane fade" id="tabRanking" role="tabpanel">
+              <div class="table-responsive">
+                <table class="table lt-table">
+                  <thead>
+                    <tr>
+                      <th style="width:80px;">Hạng</th>
+                      <th>Thí sinh</th>
+                      <th>Điểm số</th>
+                      <th>Thời gian làm bài</th>
+                      <th>Thời điểm nộp bài</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rankingTableBody">
+                    <tr><td colspan="5" class="text-center lt-empty-row">Chưa có dữ liệu xếp hạng</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- TAB LỊCH SỬ LÀM BÀI -->
+            <div class="tab-pane fade" id="tabHistory" role="tabpanel">
+              <div class="table-responsive">
+                <table class="table lt-table">
+                  <thead>
+                    <tr>
+                      <th>Lần làm</th>
+                      <th>Điểm số</th>
+                      <th>Thời gian nộp</th>
+                      <th>Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody id="historyTableBody">
+                    <tr><td colspan="4" class="text-center lt-empty-row">Bạn chưa làm bài thi này lần nào</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           MÀN HÌNH 3 — Phòng thi
+      ========================================================== -->
+      <section id="screen3" class="lt-screen d-none">
+
+        <!-- Màn hình chờ ban đầu -->
+        <div id="examWaiting" class="card lt-waiting-card">
+          <div class="card-body text-center">
+            <h2 class="lt-exam-title" id="waitTitle">Tên bài thi</h2>
+            <div class="lt-wait-meta">
+              <div><i class="bi bi-list-ol"></i> Tổng số câu: <strong id="waitQuestionCount">--</strong></div>
+              <div><i class="bi bi-clock-history"></i> Thời gian làm bài: <strong id="waitDuration">--</strong> phút</div>
+            </div>
+
+            <button id="btnStartExam" class="lt-btn-start">
+              <span>Bắt đầu</span>
+            </button>
+
+            <p class="lt-wait-note mt-4">
+              <i class="bi bi-info-circle me-1"></i>
+              Đồng hồ đếm ngược sẽ bắt đầu chạy ngay khi bạn nhấn nút "Bắt đầu". Hãy đảm bảo bạn đã sẵn sàng trước khi vào làm bài.
+            </p>
+
+            <button id="btnBackToScreen2FromWaiting" class="btn lt-btn-back mt-2">
+              <i class="bi bi-arrow-left me-1"></i>Quay lại
+            </button>
+          </div>
+        </div>
+
+        <!-- Layout chia đôi màn hình khi đang làm bài -->
+        <div id="examRoomSplit" class="lt-exam-split d-none">
+          <div class="lt-pdf-pane">
+            <div class="lt-pane-header"><i class="bi bi-file-earmark-pdf-fill me-2"></i>Đề thi</div>
+            <div class="lt-pdf-scroll">
+              <iframe id="examPdfFrame" class="lt-pdf-frame" title="Đề thi PDF"></iframe>
+            </div>
+          </div>
+
+          <div class="lt-answer-pane">
+            <div class="lt-timer-box">
+              <div class="lt-timer-label">Thời gian làm bài</div>
+              <div class="lt-timer-value" id="timerDisplay">00:00</div>
+              <div class="progress lt-timer-progress">
+                <div class="progress-bar" id="timerProgressBar" role="progressbar" style="width:100%"></div>
+              </div>
+            </div>
+
+            <div class="lt-progress-box">
+              <i class="bi bi-check2-square me-1"></i>
+              Đã làm: <strong><span id="answeredCount">0</span>/<span id="totalQuestionCount">0</span></strong> câu
+            </div>
+
+            <div class="lt-answersheet-wrap">
+              <table class="lt-answersheet-table" id="answerSheetTable">
+                <thead>
+                  <tr>
+                    <th>Câu</th>
+                    <th>Chọn đáp án</th>
+                  </tr>
+                </thead>
+                <tbody id="answerSheetBody">
+                  <!-- Được sinh động bằng luyen-tap.js -->
+                </tbody>
+              </table>
+            </div>
+
+            <button id="btnSubmitExam" class="lt-btn-submit">
+              <i class="bi bi-send-check-fill me-2"></i>Nộp bài
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- =========================================================
+         MODAL 1 — Xác nhận nộp bài
+    ========================================================== -->
+    <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content lt-modal-content">
+          <div class="modal-body text-center py-4">
+            <i class="bi bi-exclamation-triangle-fill lt-modal-warn-icon"></i>
+            <p class="lt-modal-question mt-3">Bạn có chắc chắn muốn nộp bài thi này không?</p>
+          </div>
+          <div class="modal-footer lt-modal-footer justify-content-center">
+            <button type="button" class="btn lt-btn-modal-no" data-bs-dismiss="modal">Không</button>
+            <button type="button" class="btn lt-btn-modal-yes" id="btnConfirmFinish">Kết thúc</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================
+         MODAL 2 — Chúc mừng kết quả
+    ========================================================== -->
+    <div class="modal fade" id="resultModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content lt-modal-content lt-modal-result">
+          <div class="modal-body text-center py-4">
+            <i class="bi bi-patch-check-fill lt-modal-success-icon"></i>
+            <h4 class="lt-modal-title mt-3">Chúc mừng bạn đã hoàn thành bài thi!</h4>
+
+            <div class="lt-result-grid">
+              <div class="lt-result-item">
+                <div class="lt-result-label">Số câu đúng</div>
+                <div class="lt-result-value" id="resultCorrectCount">0/0</div>
+              </div>
+              <div class="lt-result-item">
+                <div class="lt-result-label">Điểm số</div>
+                <div class="lt-result-value" id="resultScore">0</div>
+              </div>
+              <div class="lt-result-item">
+                <div class="lt-result-label">Thời gian làm bài</div>
+                <div class="lt-result-value" id="resultTime">0:00</div>
+              </div>
+              <div class="lt-result-item">
+                <div class="lt-result-label">Thứ hạng đạt được</div>
+                <div class="lt-result-value" id="resultRank">--</div>
+              </div>
+            </div>
+
+            <p class="lt-result-note" id="resultNote"></p>
+
+            <button type="button" class="btn lt-btn-result-back" id="btnBackFromResult">
+              <i class="bi bi-arrow-left me-2"></i>Quay lại
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================
+         MODAL 3 — Xem đáp án (PDF) trong iframe
+    ========================================================== -->
+    <div class="modal fade" id="answerPdfModal" tabindex="-1" aria-hidden="true" aria-labelledby="answerPdfModalLabel">
+      <div class="modal-dialog modal-dialog-centered modal-lg lt-answer-modal-dialog">
+        <div class="modal-content lt-modal-content lt-answer-modal-content">
+          <div class="modal-header lt-answer-modal-header">
+            <h5 class="modal-title lt-modal-title" id="answerPdfModalLabel">
+              <i class="bi bi-journal-text me-2"></i><span id="answerPdfModalTitle">Đáp án</span>
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Đóng"></button>
+          </div>
+          <div class="modal-body lt-answer-modal-body p-0">
+            <div id="answerPdfLoading" class="lt-answer-modal-state">
+              <div class="spinner-border lt-answer-spinner" role="status">
+                <span class="visually-hidden">Đang tải...</span>
+              </div>
+              <p class="lt-answer-state-text">Đang tải file đáp án...</p>
+            </div>
+            <div id="answerPdfError" class="lt-answer-modal-state d-none">
+              <i class="bi bi-exclamation-circle lt-answer-error-icon"></i>
+              <p class="lt-answer-state-text">Chưa có file đáp án cho bài học này.<br>Vui lòng quay lại sau.</p>
+            </div>
+            <iframe id="answerPdfFrame" class="lt-answer-pdf-frame" src="" title="Đáp án PDF"></iframe>
+          </div>
+          <div class="modal-footer lt-modal-footer">
+            <a id="answerPdfOpenNewTab" href="#" target="_blank" rel="noopener noreferrer" class="btn lt-btn-modal-no">
+              <i class="bi bi-box-arrow-up-right me-2"></i>Mở tab mới
+            </a>
+            <button type="button" class="btn lt-btn-modal-yes" data-bs-dismiss="modal">Đóng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="luyen-tap.js"></script>
+    <script src="intellisense.js"></script>
+
+      <!-- Liên kết các thẻ "gõ thử" trong bảng hướng dẫn với ô prompt trên navbar -->
+  <script>
+    (function () {
+      "use strict";
+      const cards = document.querySelectorAll(".ipa-guide-card");
+      const ipaInput = document.getElementById("ipaInput");
+      const ipaWrap = document.getElementById("ipaWrap");
+      if (!cards.length || !ipaInput) return;
+
+      cards.forEach((card) => {
+        card.addEventListener("click", () => {
+          const keyword = card.getAttribute("data-keyword") || "";
+
+          // Cuộn mượt lên đầu trang để học sinh thấy ô prompt trên navbar
+          window.scrollTo({ top: 0, behavior: "smooth" });
+
+          // Điền từ khóa và kích hoạt sự kiện input để IntelliSense hiển thị gợi ý
+          ipaInput.value = keyword;
+          ipaInput.dispatchEvent(new Event("input", { bubbles: true }));
+
+          setTimeout(() => {
+            ipaInput.focus();
+            ipaInput.setSelectionRange(ipaInput.value.length, ipaInput.value.length);
+            if (ipaWrap) {
+              ipaWrap.classList.add("ipa-guide-pulse");
+              setTimeout(() => ipaWrap.classList.remove("ipa-guide-pulse"), 900);
+            }
+          }, 350);
+        });
+      });
+    })();
+  </script>
+  </body>
+</html>

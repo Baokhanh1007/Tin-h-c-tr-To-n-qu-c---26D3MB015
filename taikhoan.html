@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thông tin tài khoản — AI cho học sinh Việt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="auth-guard.js"></script>
+    <!-- Botpress Webchat -->
+  <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
+    <script
+      src="https://files.bpcontent.cloud/2025/11/01/13/20251101133010-VMWUSFZE.js"
+      defer
+    ></script>
+    <style>
+      body { font-family:'Be Vietnam Pro',sans-serif; background:#f4f6fb; padding-top:72px; }
+
+      .tk-hero{position:relative;padding:70px 0 50px;overflow:hidden;text-align:center;color:#fff;}
+      .tk-hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);z-index:0;}
+      .tk-hero-bg::before,.tk-hero-bg::after{content:'';position:absolute;border-radius:50%;opacity:.15;animation:blobMove 8s ease-in-out infinite alternate;}
+      .tk-hero-bg::before{width:400px;height:400px;background:#00c6ff;top:-100px;left:-80px;}
+      .tk-hero-bg::after{width:300px;height:300px;background:#0072ff;bottom:-80px;right:-60px;animation-delay:-4s;}
+      @keyframes blobMove{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,30px) scale(1.15)}}
+      .tk-hero>.container{position:relative;z-index:1;}
+      .tk-hero-icon{font-size:2.8rem;color:#63d4ff;margin-bottom:12px;display:inline-block;animation:heroBounce 2.4s ease-in-out infinite;}
+      @keyframes heroBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+      .tk-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;margin-bottom:8px;}
+      .tk-hero p{opacity:.85;font-size:1rem;}
+
+      .tk-card{display:flex;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.10);margin-top:-30px;position:relative;z-index:2;}
+
+      .tk-left{width:260px;background:linear-gradient(160deg,#0f2027 0%,#203a43 50%,#2c5364 100%);padding:44px 28px;display:flex;flex-direction:column;align-items:center;gap:20px;position:relative;overflow:hidden;}
+      .tk-left .deco-c{position:absolute;border-radius:50%;border:1.5px solid rgba(255,255,255,.08);pointer-events:none;}
+      .tk-left .c1{width:200px;height:200px;bottom:-60px;right:-60px;}
+      .tk-left .c2{width:120px;height:120px;bottom:30px;right:10px;}
+      .tk-avatar{width:90px;height:90px;border-radius:50%;background:rgba(99,212,255,.2);border:2.5px solid #63d4ff;display:flex;align-items:center;justify-content:center;font-size:2.4rem;color:#63d4ff;}
+      .tk-nickname{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:#fff;text-align:center;}
+      .tk-badge{background:rgba(99,212,255,.15);color:#63d4ff;border:1px solid rgba(99,212,255,.3);border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:600;}
+      .tk-joined{color:rgba(255,255,255,.5);font-size:.75rem;text-align:center;}
+
+      .tk-action-btn{width:100%;padding:11px;border:1.5px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.06);color:#fff;font-family:'Be Vietnam Pro',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:background .2s,transform .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+      .tk-action-btn:hover{background:rgba(255,255,255,.14);transform:translateY(-2px);}
+      .tk-action-btn.logout{border-color:rgba(255,100,100,.35);color:#ff9999;}
+      .tk-action-btn.logout:hover{background:rgba(255,80,80,.12);}
+      .tk-action-btn.export{border-color:rgba(99,212,255,.35);color:#63d4ff;}
+      .tk-action-btn.export:hover{background:rgba(99,212,255,.12);}
+
+      .tk-right{flex:1;padding:44px 40px;}
+      .tk-section-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#1a1a2e;margin-bottom:4px;}
+      .tk-section-sub{color:#6b7280;font-size:.88rem;margin-bottom:28px;}
+
+      .tk-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+      .tk-info-item{padding:16px 18px;border:1.5px solid #e5e7eb;border-radius:12px;background:#fafafa;transition:border-color .2s,box-shadow .2s;}
+      .tk-info-item:hover{border-color:#0d6efd;box-shadow:0 0 0 3px rgba(13,110,253,.08);}
+      .tk-info-label{font-size:.78rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+      .tk-info-value{font-size:.97rem;font-weight:600;color:#1f2937;word-break:break-all;}
+
+      .tk-divider{border:none;border-top:1.5px solid #e5e7eb;margin:32px 0;}
+
+      #edit-section{display:none;}
+      .tk-input{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:'Be Vietnam Pro',sans-serif;font-size:.93rem;color:#1f2937;background:#fafafa;outline:none;transition:border-color .2s,box-shadow .2s;}
+      .tk-input:focus{border-color:#0d6efd;background:#fff;box-shadow:0 0 0 3px rgba(13,110,253,.12);}
+      .tk-label{font-weight:600;font-size:.88rem;color:#374151;display:block;margin:12px 0 5px;}
+      .tk-save-btn{padding:12px 28px;background:linear-gradient(135deg,#0d6efd,#0a58ca);color:#fff;border:none;border-radius:10px;font-family:'Be Vietnam Pro',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(13,110,253,.3);transition:transform .2s,box-shadow .2s;margin-top:16px;}
+      .tk-save-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(13,110,253,.4);}
+      .tk-cancel-btn{padding:12px 20px;background:transparent;border:1.5px solid #e5e7eb;border-radius:10px;font-family:'Be Vietnam Pro',sans-serif;font-size:.95rem;font-weight:600;color:#6b7280;cursor:pointer;margin-top:16px;margin-left:10px;transition:border-color .2s;}
+      .tk-cancel-btn:hover{border-color:#9ca3af;}
+
+      .json-preview{background:#1e293b;border-radius:12px;padding:18px;font-family:'Courier New',monospace;font-size:.78rem;color:#94a3b8;overflow-x:auto;max-height:200px;overflow-y:auto;margin-top:16px;line-height:1.7;}
+      .json-key{color:#63d4ff;}
+      .json-str{color:#a3e635;}
+
+      @media(max-width:860px){.tk-card{flex-direction:column;}.tk-left{width:100%;flex-direction:row;flex-wrap:wrap;padding:28px 24px;justify-content:center;}.tk-info-grid{grid-template-columns:1fr;}}
+      @media(max-width:500px){.tk-right{padding:28px 20px;}}
+    </style>
+    <link rel="stylesheet" href="intellisense.css" />
+</head>
+  <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html"><i class="bi bi-cpu me-2"></i>AI cho học sinh Việt</a>
+      <!-- ===== IntelliSense Prompt Assistant (IPA) — gợi ý prompt thời gian thực ===== -->
+      <div class="ipa-wrap" id="ipaWrap">
+        <div class="ipa-input-box">
+          <i class="bi bi-stars"></i>
+          <input id="ipaInput" class="ipa-input" type="text"
+                 placeholder="Gõ prompt của bạn... (vd: giải bài toán)" autocomplete="off" />
+          <span class="ipa-badge" id="ipaBadge">Đã áp dụng</span>
+        </div>
+
+        <div class="suggestion-dropdown" id="ipaDropdown">
+          <div class="suggestion-dropdown-header">
+            <i class="bi bi-magic"></i> Gợi ý prompt tối ưu
+          </div>
+          <div class="suggestion-list" id="ipaList"></div>
+          <div class="suggestion-dropdown-footer">
+            <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> chọn</span>
+            <span><kbd>Enter</kbd> / <kbd>Tab</kbd> dùng gợi ý</span>
+            <span><kbd>Esc</kbd> đóng</span>
+          </div>
+        </div>
+      </div>
+
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="index.html#intro">Giới thiệu</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Ứng dụng AI</a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" href="index.html#apps">Tổng quan</a></li>
+                <li><a class="dropdown-item" href="ai-toan.html">AI trong Toán</a></li>
+                <li><a class="dropdown-item" href="ai-tienganh.html">AI trong Tiếng Anh</a></li>
+                <li><a class="dropdown-item" href="ai-vatly.html">AI trong Vật lý</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="luyen-tap.html">Luyện tập</a></li>
+            <li class="nav-item"><a class="nav-link" href="lienhe.html">Liên hệ</a></li>
+            <li class="nav-item"><a class="nav-link" href="thuvien.html">Thư viện</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+                <i class="bi bi-person-circle me-1"></i><span id="nav-name">Tài khoản</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                <li><a class="dropdown-item" href="taikhoan.html"><i class="bi bi-person me-2"></i>Thông tin tài khoản</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href= "login.html" id="nav-logout"><i class="bi bi-box-arrow-right me-2"></i>Đăng xuất</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <section class="tk-hero">
+      <div class="tk-hero-bg"></div>
+      <div class="container">
+        <div class="tk-hero-icon"><i class="bi bi-person-badge"></i></div>
+        <h1>Thông tin tài khoản</h1>
+        <p>Xem và chỉnh sửa thông tin cá nhân của bạn</p>
+      </div>
+    </section>
+
+    <section class="py-5">
+      <div class="container">
+        <div class="tk-card">
+          <div class="tk-left">
+            <div class="deco-c c1"></div>
+            <div class="deco-c c2"></div>
+            <div class="tk-avatar"><i class="bi bi-person-fill"></i></div>
+            <div class="tk-nickname" id="disp-nickname">—</div>
+            <div class="tk-badge">Học sinh</div>
+            <div class="tk-joined" id="disp-joined"></div>
+            <button class="tk-action-btn" onclick="showEdit()"><i class="bi bi-pencil-square"></i> Chỉnh sửa</button>
+            <button class="tk-action-btn export" onclick="exportJSON()"><i class="bi bi-download"></i> Xuất users.json</button>
+            <button class="tk-action-btn logout" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
+          </div>
+
+          <div class="tk-right">
+            <div id="view-section">
+              <div class="tk-section-title">Thông tin cá nhân</div>
+              <div class="tk-section-sub">Dữ liệu lưu dạng JSON trong trình duyệt của bạn</div>
+              <div class="tk-info-grid">
+                <div class="tk-info-item">
+                  <div class="tk-info-label"><i class="bi bi-person"></i> Tên đăng nhập</div>
+                  <div class="tk-info-value" id="disp-username">—</div>
+                </div>
+                <div class="tk-info-item">
+                  <div class="tk-info-label"><i class="bi bi-envelope"></i> Email</div>
+                  <div class="tk-info-value" id="disp-email">—</div>
+                </div>
+              </div>
+
+              <hr class="tk-divider">
+
+              <div class="tk-section-title" style="font-size:1rem;">Dữ liệu JSON của bạn</div>
+              <div class="tk-section-sub">Đây là cách dữ liệu được lưu trữ theo định dạng JSON</div>
+              <div class="json-preview" id="json-preview"></div>
+            </div>
+
+            <div id="edit-section">
+              <div class="tk-section-title">Chỉnh sửa thông tin</div>
+              <div class="tk-section-sub">Thay đổi sẽ cập nhật vào JSON database</div>
+              <label class="tk-label">Tên đăng nhập</label>
+              <input class="tk-input" type="text" id="edit-username" placeholder="Tên đăng nhập">
+              <br>
+              <button class="tk-save-btn" onclick="saveEdit()"><i class="bi bi-check-lg me-1"></i>Lưu thay đổi</button>
+              <button class="tk-cancel-btn" onclick="cancelEdit()">Huỷ</button>
+            </div>
+
+            <div style="margin-top:20px;">
+              <small style="color:#9ca3af;font-size:.78rem;">
+                <i class="bi bi-shield-lock me-1"></i>
+                Lưu cục bộ dạng JSON — key: <code>users_db</code>. Nhấn "Xuất users.json" để tải file ra máy.
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-black text-center text-white-50 py-3">
+      <small>© 2026 AI cho học sinh Việt. Thiết kế bởi học viên Nguyễn Văn Bảo Khánh.</small>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+      import { initializeApp }              from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+      import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey:            "AIzaSyC-Y0wIv3YYvIdupGIjrtVylIvn7e0Yh0o",
+        authDomain:        "tinht-9b5de.firebaseapp.com",
+        projectId:         "tinht-9b5de",
+        storageBucket:     "tinht-9b5de.firebasestorage.app",
+        messagingSenderId: "197453039484",
+        appId:             "1:197453039484:web:7ac38f6ca7d0178c06c6f9",
+        measurementId:     "G-9FVLBG0TST"
+      };
+
+      const app  = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      // ── localStorage helpers ────────────────────────────────
+      function getDB() {
+        try { return JSON.parse(localStorage.getItem("users_db") || '{"users":[]}'); }
+        catch(e) { return { users: [] }; }
+      }
+      function saveDB(db) {
+        localStorage.setItem("users_db", JSON.stringify(db, null, 2));
+      }
+      function getLocalProfile(email) {
+        return getDB().users.find(u => u.email === email) || null;
+      }
+
+      // ── Render JSON đẹp ────────────────────────────────────
+      function highlightJSON(obj) {
+        var safe = { username: obj.username, email: obj.email, createdAt: obj.createdAt };
+        var s = JSON.stringify(safe, null, 2).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        s = s.replace(/"([^"]+)":/g, '<span class="json-key">"$1"</span>:');
+        s = s.replace(/: "([^"]*)"/g, ': <span class="json-str">"$1"</span>');
+        return s;
+      }
+
+      // ── Load profile ra giao diện ───────────────────────────
+      function loadProfile(firebaseUser) {
+        var local = getLocalProfile(firebaseUser.email);
+
+        var username  = (local && local.username)  || firebaseUser.email.split("@")[0];
+        var createdAt = (local && local.createdAt) || firebaseUser.metadata.creationTime;
+
+        document.getElementById("disp-username").textContent  = username;
+        document.getElementById("disp-nickname").textContent  = username;
+        document.getElementById("disp-email").textContent     = firebaseUser.email;
+        document.getElementById("nav-name").textContent       = username;
+
+        if (createdAt) {
+          var d = new Date(createdAt);
+          document.getElementById("disp-joined").textContent = "Tham gia: " + d.toLocaleDateString("vi-VN");
+        }
+
+        var displayObj = { username, email: firebaseUser.email, createdAt };
+        document.getElementById("json-preview").innerHTML = highlightJSON(displayObj);
+
+        // Lưu vào window để showEdit dùng
+        window.__firebaseUser = firebaseUser;
+      }
+
+      // ── Chỉnh sửa ──────────────────────────────────────────
+      window.showEdit = function() {
+        var user  = window.__firebaseUser;
+        var local = user ? getLocalProfile(user.email) : null;
+        document.getElementById("view-section").style.display = "none";
+        document.getElementById("edit-section").style.display = "block";
+        document.getElementById("edit-username").value = (local && local.username) || "";
+      };
+
+      window.cancelEdit = function() {
+        document.getElementById("edit-section").style.display = "none";
+        document.getElementById("view-section").style.display = "block";
+      };
+
+      window.saveEdit = function() {
+        var username = document.getElementById("edit-username").value.trim();
+        if (!username) { alert("Tên đăng nhập không được để trống!"); return; }
+
+        var user = window.__firebaseUser;
+        if (!user) return;
+
+        var db  = getDB();
+        var idx = db.users.findIndex(u => u.email === user.email);
+        var updated = { username, email: user.email };
+        if (idx >= 0) Object.assign(db.users[idx], updated);
+        else db.users.push({ ...updated, createdAt: new Date().toISOString(), provider: "google" });
+        saveDB(db);
+
+        // Cập nhật nav-name ngay
+        document.getElementById("nav-name").textContent = username;
+
+        cancelEdit();
+        loadProfile(user);
+        alert("Lưu thay đổi thành công!");
+      };
+
+      // ── Xuất JSON ───────────────────────────────────────────
+      window.exportJSON = function() {
+        var db   = getDB();
+        var blob = new Blob([JSON.stringify(db, null, 2)], { type: "application/json" });
+        var url  = URL.createObjectURL(blob);
+        var a    = document.createElement("a");
+        a.href = url; a.download = "users.json"; a.click();
+        URL.revokeObjectURL(url);
+      };
+
+      // ── Đăng xuất ───────────────────────────────────────────
+      window.doLogout = async function() {
+        if (confirm("Bạn có chắc muốn đăng xuất?")) {
+          await signOut(auth);
+          window.location.href = "login.html";
+        }
+      };
+
+      // ── Lắng nghe Firebase Auth ─────────────────────────────
+      onAuthStateChanged(auth, function(user) {
+        if (!user) {
+          window.location.href = "login.html";
+          return;
+        }
+        loadProfile(user);
+      });
+    </script>
+    <script src="intellisense.js"></script>
+</body>
+</html>

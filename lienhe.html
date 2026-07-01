@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liên hệ - AI cho học sinh Việt</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="lienhe.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <!-- Botpress Webchat -->
+  <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
+    <script
+      src="https://files.bpcontent.cloud/2025/11/01/13/20251101133010-VMWUSFZE.js"
+      defer
+    ></script>
+    <link rel="stylesheet" href="intellisense.css" />
+</head>
+
+  <body>
+  <!-- ======================= NAVBAR ======================= -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">
+        <i class="bi bi-cpu me-2"></i>AI cho học sinh Việt
+      </a>
+      <!-- ===== IntelliSense Prompt Assistant (IPA) — gợi ý prompt thời gian thực ===== -->
+      <div class="ipa-wrap" id="ipaWrap">
+        <div class="ipa-input-box">
+          <i class="bi bi-stars"></i>
+          <input id="ipaInput" class="ipa-input" type="text"
+                 placeholder="Gõ prompt của bạn... (vd: giải bài toán)" autocomplete="off" />
+          <span class="ipa-badge" id="ipaBadge">Đã áp dụng</span>
+        </div>
+
+        <div class="suggestion-dropdown" id="ipaDropdown">
+          <div class="suggestion-dropdown-header">
+            <i class="bi bi-magic"></i> Gợi ý prompt tối ưu
+          </div>
+          <div class="suggestion-list" id="ipaList"></div>
+          <div class="suggestion-dropdown-footer">
+            <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> chọn</span>
+            <span><kbd>Enter</kbd> / <kbd>Tab</kbd> dùng gợi ý</span>
+            <span><kbd>Esc</kbd> đóng</span>
+          </div>
+        </div>
+      </div>
+
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Giới thiệu</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="aiMenu" role="button" data-bs-toggle="dropdown">
+              Ứng dụng AI
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="#apps">Tổng quan</a></li>
+              <li><a class="dropdown-item" href="ai-toan.html">AI trong Toán</a></li>
+              <li><a class="dropdown-item" href="ai-tienganh.html">AI trong Tiếng Anh</a></li>
+              <li><a class="dropdown-item" href="ai-vatly.html">AI trong Vật lý</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="luyen-tap.html">Luyện tập</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="lienhe.html">Liên hệ</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="thuvien.html">Thư viện</a>
+          </li>
+
+          <!-- Dropdown Tài khoản — tên người dùng cập nhật bởi auth-guard.js -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="accountMenu" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle me-1"></i>
+              <span id="nav-name">Tài khoản</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+              <li>
+                <a class="dropdown-item" href="taikhoan.html">
+                  <i class="bi bi-person me-2"></i>Thông tin tài khoản
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item text-danger" href="#" id="nav-logout">
+                  <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                </a>
+              </li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    <!-- HERO -->
+    <section class="lh-hero">
+      <div class="lh-hero-bg"></div>
+      <div class="container text-center text-white position-relative">
+        <div class="lh-hero-icon animate-bounce">
+          <i class="fa-solid fa-comments"></i>
+        </div>
+        <h1 class="lh-hero-title">Liên hệ &amp; Góp ý</h1>
+        <p class="lh-hero-sub">Mọi ý kiến của bạn đều giúp chúng tớ cải thiện tốt hơn</p>
+      </div>
+    </section>
+
+    <!-- FORM SECTION -->
+    <section class="lh-section">
+      <div class="container">
+        <div class="lh-card reveal">
+
+          <!-- LEFT -->
+          <div class="lh-left">
+            <h3 class="lh-form-title">Gửi phản hồi cho chúng tớ</h3>
+            <p class="lh-form-sub">Điền thông tin bên dưới, chúng tớ sẽ phản hồi sớm nhất có thể!</p>
+
+            <form id="feedbackForm" novalidate>
+
+              <!-- Họ tên + Email -->
+              <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                  <div class="lh-input-wrap">
+                    <i class="fa-solid fa-user lh-input-icon"></i>
+                    <input type="text" id="userName" name="user_name" class="lh-input"
+                      placeholder="Họ và tên *" required/>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="lh-input-wrap">
+                    <i class="fa-solid fa-envelope lh-input-icon"></i>
+                    <input type="email" id="userEmail" name="user_email" class="lh-input"
+                      placeholder="Email *" required/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SĐT + Trường/Lớp -->
+              <div class="row g-3 mb-4">
+                <div class="col-sm-6">
+                  <div class="lh-input-wrap">
+                    <i class="fa-solid fa-phone lh-input-icon"></i>
+                    <input type="tel" id="userPhone" name="user_phone" class="lh-input"
+                      placeholder="Số điện thoại"/>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="lh-input-wrap">
+                    <i class="fa-solid fa-school lh-input-icon"></i>
+                    <input type="text" id="userClass" name="user_class" class="lh-input"
+                      placeholder="Trường / Lớp"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Checkbox vấn đề -->
+              <p class="lh-label mb-2"><i class="fa-solid fa-circle-exclamation me-1 text-warning"></i>Vấn đề gặp phải</p>
+              <div class="lh-checkbox-grid mb-4">
+                <label class="lh-checkbox-item">
+                  <input type="checkbox" value="Tài liệu hỏng/lỗi"/>
+                  <span class="lh-check-box"></span>
+                  <span>Tài liệu hỏng/lỗi</span>
+                </label>
+                <label class="lh-checkbox-item">
+                  <input type="checkbox" value="Không tải được file"/>
+                  <span class="lh-check-box"></span>
+                  <span>Không tải được file</span>
+                </label>
+                <label class="lh-checkbox-item">
+                  <input type="checkbox" value="Link tài liệu bị lỗi"/>
+                  <span class="lh-check-box"></span>
+                  <span>Link tài liệu bị lỗi</span>
+                </label>
+                <label class="lh-checkbox-item">
+                  <input type="checkbox" value="Thiếu tài liệu cần thiết"/>
+                  <span class="lh-check-box"></span>
+                  <span>Thiếu tài liệu</span>
+                </label>
+                <label class="lh-checkbox-item">
+                  <input type="checkbox" value="Website tải chậm"/>
+                  <span class="lh-check-box"></span>
+                  <span>Website tải chậm</span>
+                </label>
+                <label class="lh-checkbox-item">
+                  <input type="checkbox" value="Khó tìm tài liệu"/>
+                  <span class="lh-check-box"></span>
+                  <span>Khó tìm tài liệu</span>
+                </label>
+                <label class="lh-checkbox-item">
+                  <input type="checkbox" value="Khác" id="chkOther"/>
+                  <span class="lh-check-box"></span>
+                  <span>Khác</span>
+                </label>
+              </div>
+
+              <!-- Góp ý chi tiết -->
+              <p class="lh-label mb-2"><i class="fa-solid fa-pen-to-square me-1 text-primary"></i>Góp ý chi tiết</p>
+              <div class="lh-textarea-wrap mb-4">
+                <textarea id="userMessage" name="message" class="lh-textarea"
+                  placeholder="Mô tả chi tiết vấn đề hoặc góp ý của bạn..." rows="4"></textarea>
+              </div>
+
+              <!-- Submit -->
+              <button type="submit" class="lh-btn-submit" id="submitBtn">
+                <span class="btn-text"><i class="fa-solid fa-paper-plane me-2"></i>Gửi góp ý</span>
+                <span class="btn-loading" style="display:none;">
+                  <span class="spinner-border spinner-border-sm me-2"></span>Đang gửi…
+                </span>
+              </button>
+
+              <!-- Message -->
+              <div id="formMessage" class="lh-form-msg mt-3" style="display:none;"></div>
+
+            </form>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="lh-right">
+            <div class="lh-info-block">
+              <div class="lh-info-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+              <h4>Phản hồi nhanh</h4>
+              <p>Chúng tớ sẽ đọc và phản hồi trong vòng <strong>24 giờ</strong></p>
+            </div>
+            <div class="lh-info-block">
+              <div class="lh-info-icon"><i class="fa-solid fa-shield-halved"></i></div>
+              <h4>Bảo mật thông tin</h4>
+              <p>Thông tin của bạn được bảo mật và chỉ dùng để liên lạc</p>
+            </div>
+            <div class="lh-info-block">
+              <div class="lh-info-icon"><i class="fa-solid fa-chart-line"></i></div>
+              <h4>Liên tục cải thiện</h4>
+              <p>Mọi góp ý đều được ghi nhận để website tốt hơn mỗi ngày</p>
+            </div>
+
+            <!-- Decoration -->
+            <div class="lh-deco-circles">
+              <span class="deco-c c1"></span>
+              <span class="deco-c c2"></span>
+              <span class="deco-c c3"></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black text-center text-white-50 py-3">
+      <small>© 2026 AI cho học sinh Việt. Thiết kế bởi học viên Nguyễn Văn Bảo Khánh.</small>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>emailjs.init("uimJMK5IW2KfSMrxM");</script>
+    <script src="lienhe.js"></script>
+    <script type="module" src="auth-guard.js"></script>
+    <script src="intellisense.js"></script>
+</body>
+</html>

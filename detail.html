@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Chi tiết tài liệu - AI cho học sinh Việt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <!-- Botpress Webchat -->
+  <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
+    <script
+      src="https://files.bpcontent.cloud/2025/11/01/13/20251101133010-VMWUSFZE.js"
+      defer
+    ></script>
+    <style>
+      body { padding-top: 70px; background: #f5f6fa; }
+
+      /* Hero cover */
+      .detail-hero {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+        padding: 48px 0 40px;
+        color: #fff;
+      }
+      .cover-img {
+        width: 160px;
+        border-radius: 8px;
+        box-shadow: 0 8px 32px rgba(0,0,0,.5);
+        display: block;
+      }
+      .doc-main-title {
+        font-size: 1.7rem;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+
+      /* Summary box */
+      .summary-box {
+        background: #fff;
+        border-left: 4px solid #0d6efd;
+        border-radius: 8px;
+        padding: 20px 24px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.07);
+      }
+
+      /* PDF viewer */
+      .pdf-viewer-wrap {
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0,0,0,.10);
+      }
+      .pdf-iframe {
+        width: 100%;
+        height: 680px;
+        border: none;
+        display: block;
+      }
+
+      /* Related card */
+      .related-card {
+        cursor: pointer;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,.08);
+        transition: transform .2s, box-shadow .2s;
+        background: #fff;
+      }
+      .related-card:hover { transform: translateY(-4px); box-shadow: 0 8px 22px rgba(0,0,0,.14); }
+      .related-card:hover .related-title { color: #e00; }
+      .related-cover { width:100%; aspect-ratio:3/4; object-fit:cover; display:block; }
+      .related-title { font-size: .85rem; font-weight: 600; color: #222; transition: color .2s; }
+
+      /* Breadcrumb */
+      .breadcrumb-item a { color: #0d6efd; text-decoration: none; }
+    </style>
+    <link rel="stylesheet" href="intellisense.css" />
+</head>
+  <body>
+
+      <!-- ======================= NAVBAR ======================= -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">
+        <i class="bi bi-cpu me-2"></i>AI cho học sinh Việt
+      </a>
+      <!-- ===== IntelliSense Prompt Assistant (IPA) — gợi ý prompt thời gian thực ===== -->
+      <div class="ipa-wrap" id="ipaWrap">
+        <div class="ipa-input-box">
+          <i class="bi bi-stars"></i>
+          <input id="ipaInput" class="ipa-input" type="text"
+                 placeholder="Gõ prompt của bạn... (vd: giải bài toán)" autocomplete="off" />
+          <span class="ipa-badge" id="ipaBadge">Đã áp dụng</span>
+        </div>
+
+        <div class="suggestion-dropdown" id="ipaDropdown">
+          <div class="suggestion-dropdown-header">
+            <i class="bi bi-magic"></i> Gợi ý prompt tối ưu
+          </div>
+          <div class="suggestion-list" id="ipaList"></div>
+          <div class="suggestion-dropdown-footer">
+            <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> chọn</span>
+            <span><kbd>Enter</kbd> / <kbd>Tab</kbd> dùng gợi ý</span>
+            <span><kbd>Esc</kbd> đóng</span>
+          </div>
+        </div>
+      </div>
+
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+
+          <li class="nav-item">
+            <a class="nav-link" href="#intro">Giới thiệu</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="aiMenu" role="button" data-bs-toggle="dropdown">
+              Ứng dụng AI
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="#apps">Tổng quan</a></li>
+              <li><a class="dropdown-item" href="ai-toan.html">AI trong Toán</a></li>
+              <li><a class="dropdown-item" href="ai-tienganh.html">AI trong Tiếng Anh</a></li>
+              <li><a class="dropdown-item" href="ai-vatly.html">AI trong Vật lý</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="luyen-tap.html">Luyện tập</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="lienhe.html">Liên hệ</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="thuvien.html">Thư viện</a>
+          </li>
+
+          <!-- Dropdown Tài khoản — tên người dùng cập nhật bởi auth-guard.js -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="accountMenu" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle me-1"></i>
+              <span id="nav-name">Tài khoản</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+              <li>
+                <a class="dropdown-item" href="taikhoan.html">
+                  <i class="bi bi-person me-2"></i>Thông tin tài khoản
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item text-danger" href="#" id="nav-logout">
+                  <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                </a>
+              </li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    <!-- LOADING STATE -->
+    <div id="loadingState" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-3 text-muted">Đang tải tài liệu…</p>
+    </div>
+
+    <!-- NOT FOUND -->
+    <div id="notFound" class="container py-5 text-center" style="display:none;">
+      <i class="bi bi-file-earmark-x display-1 text-muted"></i>
+      <h3 class="mt-3">Không tìm thấy tài liệu</h3>
+      <p class="text-muted">Tài liệu đã bị xoá hoặc link không hợp lệ.</p>
+      <a href="thuvien.html" class="btn btn-primary mt-2">Quay lại Thư viện</a>
+    </div>
+
+    <!-- MAIN CONTENT (ẩn đến khi load xong) -->
+    <div id="mainContent" style="display:none;">
+
+      <!-- Hero -->
+      <section class="detail-hero">
+        <div class="container">
+          <!-- Breadcrumb -->
+          <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb mb-0" style="background:transparent;padding:0;">
+              <li class="breadcrumb-item"><a href="thuvien.html" class="text-white-50">Thư viện</a></li>
+              <li class="breadcrumb-item active text-white" id="bcTitle">Chi tiết</li>
+            </ol>
+          </nav>
+
+          <div class="row align-items-center g-4">
+            <div class="col-auto">
+              <img id="coverImg" src="" alt="Bìa sách" class="cover-img"/>
+            </div>
+            <div class="col">
+              <span class="badge bg-primary mb-2 fs-6" id="subjectBadge">Môn học</span>
+              <h1 class="doc-main-title mb-2" id="docTitle">Tiêu đề</h1>
+              <p class="text-white-50 mb-3" id="docMeta"></p>
+              <a id="downloadBtn" href="#" download class="btn btn-light me-2">
+                <i class="bi bi-download me-1"></i>Tải xuống PDF
+              </a>
+              <a href="thuvien.html" class="btn btn-outline-light">
+                <i class="bi bi-arrow-left me-1"></i>Quay lại
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="container py-4">
+        <div class="row g-4">
+
+          <!-- LEFT: tóm tắt + viewer -->
+          <div class="col-lg-8">
+
+            <!-- Tóm tắt -->
+            <div class="summary-box mb-4">
+              <h5 class="fw-bold mb-2"><i class="bi bi-text-paragraph me-2 text-primary"></i>Tóm tắt nội dung</h5>
+              <p id="summaryText" class="mb-0 text-muted" style="line-height:1.7;"></p>
+            </div>
+
+            <!-- PDF Viewer -->
+            <div class="pdf-viewer-wrap">
+              <div class="p-3 border-bottom d-flex align-items-center justify-content-between">
+                <span class="fw-semibold"><i class="bi bi-eye me-2"></i>Xem trước tài liệu</span>
+                <span class="text-muted small" id="pageCount"></span>
+              </div>
+
+              <!-- Tabs: iframe vs ảnh bìa -->
+              <ul class="nav nav-tabs px-3 pt-2" id="viewerTabs">
+                <li class="nav-item">
+                  <button class="nav-link active" data-tab="iframe" onclick="switchTab('iframe',this)">
+                    <i class="bi bi-layout-text-window me-1"></i>Xem PDF
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link" data-tab="cover" onclick="switchTab('cover',this)">
+                    <i class="bi bi-image me-1"></i>Ảnh bìa
+                  </button>
+                </li>
+              </ul>
+
+              <div id="tabIframe" class="tab-pane">
+                <iframe id="pdfIframe" class="pdf-iframe" title="Xem PDF"></iframe>
+              </div>
+              <div id="tabCover" class="tab-pane p-3 text-center" style="display:none;">
+                <img id="coverLarge" src="" alt="Bìa sách" style="max-height:600px;border-radius:6px;box-shadow:0 4px 18px rgba(0,0,0,.2);"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: sidebar -->
+          <div class="col-lg-4">
+            <div class="card shadow-sm p-3 mb-4">
+              <h6 class="fw-bold mb-3"><i class="bi bi-info-circle me-1 text-primary"></i>Thông tin tài liệu</h6>
+              <ul class="list-unstyled mb-0 small">
+                <li class="py-1 border-bottom"><span class="text-muted">Môn học:</span> <strong id="infoSubject"></strong></li>
+                <li class="py-1 border-bottom"><span class="text-muted">Số trang:</span> <strong id="infoPages"></strong></li>
+                <li class="py-1"><span class="text-muted">Ngày tải:</span> <strong id="infoDate"></strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- TÀI LIỆU LIÊN QUAN -->
+        <div id="relatedSection" class="mt-4" style="display:none;">
+          <h4 class="fw-bold mb-3"><i class="bi bi-bookmarks me-2 text-primary"></i>Tài liệu liên quan</h4>
+          <div class="row g-3" id="relatedList"></div>
+        </div>
+      </div>
+    </div><!-- /mainContent -->
+
+    <!-- FOOTER -->
+    <footer class="bg-black text-center text-white-50 py-3 mt-4">
+      <small>© 2026 AI cho học sinh Việt. Thiết kế bởi học viên Nguyễn Văn Bảo Khánh.</small>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="detail.js"></script>
+    <script type="module" src="auth-guard.js"></script>
+    <script src="intellisense.js"></script>
+</body>
+</html>
